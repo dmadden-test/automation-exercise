@@ -1,0 +1,27 @@
+{
+    "type": "object",
+    "properties": {
+        "id": {"type": "integer"},
+        "name": {"type": "string"},
+        "price": {
+            "type": "string",
+            "pattern": "^Rs. \\d+$"
+        },
+        "brand": {"type": "string"},
+        "category": {
+            "type": "object",
+            "properties": {
+                "usertype": {
+                    "type": "object",
+                    "properties": {
+                        "usertype": {"type": "string"}
+                    },
+                    "required": ["usertype"]
+                },
+                "category": {"type": "string"}
+            },
+            "required": ["usertype", "category"]
+        }
+    },
+    "required": ["id", "name", "price", "brand", "category"]
+}
