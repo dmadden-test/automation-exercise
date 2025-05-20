@@ -4,12 +4,14 @@ from behave import *
 import requests
 
 from features.config.config import logger, get_settings
-from features.config.utils import verify_data_structure, validate_json_data, get_project_root
+from features.config.utils import verify_data_structure, validate_json_data, get_project_root, create_new_user
 from dotenv import load_dotenv
 
 load_dotenv()
 
 BASE_URL = os.getenv("BASE_URL")
+USER_EMAIL = os.getenv("USER_EMAIL")
+USER_PASSWORD =os.getenv("USER_PASSWORD")
 
 
 @then("i receive a valid HTTP {expected_status_code} response code")
@@ -47,15 +49,20 @@ def step_impl(context, method: str, request: str):
 
 @step("i receive an expected {code} response message")
 def step_impl(context, code: str):
-    actual_message = context.response.json()["message"]
-    if code == '400':
-        expected_message = "Bad request"
-        # , search_product parameter is missing in POST request."
-    else:
-        expected_message = "This request method is not supported."
+    expected_message = {
+        '200': ["User exists!","Account deleted!"],
+        '201': "User created!",
+        '400': ["Bad request, search_product parameter is missing in POST request.",
+                "Bad request, email or password parameter is missing in POST request."],
+        '404': "User not found!",
+        '405': "This request method is not supported.",
+    }
 
-    logger.info(f"The actual message is: {actual_message}")
-    assert expected_message in actual_message, f"Expected {expected_message} message, actual {actual_message}"
+    # Retrieve the expected message from the dictionary; if not found, use the default message
+    expected_message = expected_message.get(code, "Unexpected message received")
+    actual_message = context.response.json()["message"]
+
+    assert actual_message in expected_message, f"Expected {expected_message} message, actual {actual_message}"
 
 
 @when("i send a post request to the search products endpoint with '{search_parameter}'")
@@ -75,3 +82,26 @@ def step_impl(context, search_parameter: str):
     for item in response:
         search_result = item['category']['category']
         assert search_parameter in search_result, f"No search results for '{search_parameter}'"
+
+
+@when("i send a post request to the verify login endpoint with '{email}' and '{password}'")
+def step_impl(context, email: str, password: str):
+    payload = {'email': email, 'password': password}
+    context.response = requests.post(BASE_URL + 'verifyLogin', data=payload, verify=False)
+    assert context.response is not None
+
+
+@when("i send a post request to create a new account")
+def step_impl(context):
+    context.email = USER_EMAIL
+    context.password = USER_PASSWORD
+    payload = create_new_user(context.email, context.password)
+    context.response = requests.post(BASE_URL + 'createAccount', data=payload, verify=False)
+    assert context.response is not None
+
+
+@when("i send a delete request to the deleteAccount endpoint including '{email}' and '{password}'")
+def step_impl(context, email, password):
+    payload = {'email': email, 'password': password}
+    context.response = requests.delete(BASE_URL + 'deleteAccount', data=payload, verify=False)
+    assert context.response is not None
