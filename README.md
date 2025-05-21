@@ -2,7 +2,7 @@
 # Automation Exercise
 
 ## BDD - API & UI
-
+This practice project includes API and UI tests which have been written using Behave for Python against the automation website: https://automationexercise.com/
 
 ### Create a virtual environment and install dependencies
 
@@ -21,18 +21,6 @@ The project contains a ``.env`` file
 #### Environment variable for API
 1. **BASE_URL**
 
-
-## Pre-commit
-
-To install pre commit
-````
-pip install pre-commit
-pre-commit install
-````
-To run pre-commit on all files
-````
-pre-commit run --all-files
-````
 
 ## Testing
 

@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+import requests
 from faker import Faker
 from jsonschema import validate, ValidationError
 from features.config.config import logger
@@ -48,6 +49,16 @@ def create_new_user(email, password):
     }
     logger.info(payload)
     return payload
+
+
+def get_http_attr(method, request):
+    try:
+        request_method = getattr(requests, method.lower())
+    except AttributeError:
+        raise ValueError(f"Invalid HTTP method: {method}")
+
+    return request_method
+
 
 def get_project_root() -> Path:
     return Path(__file__).parent.parent
