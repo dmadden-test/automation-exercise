@@ -42,9 +42,11 @@ jobs:
 
       - name: Install Allure
         run: |
-          sudo apt-add-repository ppa:qameta/allure
-          sudo apt-get update 
-          sudo apt-get install allure
+          curl -sL https://github.com/allure-framework/allure2/releases/latest/download/allure-2.34.0.tgz -o allure.tgz
+          tar -zxvf allure.tgz
+          sudo mv allure-2.34.0 /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+        shell: bash
 
       - name: Generate Allure Report
         run: |
