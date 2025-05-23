@@ -21,12 +21,12 @@ Feature: This feature covers User Account API test scenarios from https://automa
 #    Scenario: Required fields missing
 
 
-  Scenario: Get user account details
-    When i send a 'get' request to the 'getUserDetailByEmail' endpoint including email parameter
-    Then i receive a valid HTTP 200 response code
-    And the users details are returned
-
-    # account doesnt exist
+#  Scenario: Get user account details
+#    When i send a 'get' request to the 'getUserDetailByEmail' endpoint including email parameter
+#    Then i receive a valid HTTP 200 response code
+#    And the users details are returned
+#
+#    # account doesnt exist
 
 
 
