@@ -38,4 +38,20 @@ jobs:
 
       - name: Run Behave tests
         run: |
-          behave
+          behave -f allure_behave.formatter:AllureFormatter -o allure-results || true
+
+      - name: Install Allure
+        run: |
+          sudo apt-add-repository ppa:qameta/allure
+          sudo apt-get update 
+          sudo apt-get install allure
+
+      - name: Generate Allure Report
+        run: |
+          allure generate allure-results -o allure-report --clean
+
+      - name: Upload Allure Report as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report
+          path: allure-report

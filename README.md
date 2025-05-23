@@ -20,6 +20,8 @@ The project contains a ``.env`` file
 
 #### Environment variable for API
 1. **BASE_URL**
+2. **USER_EMAIL**
+3. **USER_PASSWORD**
 
 
 ## Testing
