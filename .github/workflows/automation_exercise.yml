@@ -22,7 +22,11 @@ jobs:
 
       - name: Run the behave tests in Docker
         run: |
-          docker run --name test-run -e BASE_URL="https://automationexercise.com/api/" -e USER_EMAIL="test@test.ie" -e USER_PASSWORD="test1234" auto_exec
+          docker run --name test-run \
+          -e BASE_URL="${{ secrets.BASE_URL }}" \
+          -e USER_EMAIL="${{ secrets.USER_EMAIL }}" \
+          -e USER_PASSWORD="${{ secrets.USER_PASSWORD }}" \
+          auto_exec
           docker cp test-run:/app/allure-results ./allure-results
 
       - name: Generate Allure Report
