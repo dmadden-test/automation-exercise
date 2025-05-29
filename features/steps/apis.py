@@ -5,7 +5,6 @@ import requests
 
 from features.config.config import logger, get_settings
 from features.config.utils import (
-    verify_data_structure,
     validate_json_data,
     get_project_root,
     create_new_user,
@@ -133,9 +132,9 @@ def step_impl(context):
     context.execute_steps(
         """When i send a delete request to the deleteAccount endpoint including email and password"""
     )
-    payload = create_new_user(context.email, context.password)
+    context.payload = create_new_user(context.email, context.password)
     context.response = requests.post(
-        BASE_URL + "createAccount", data=payload, verify=False
+        BASE_URL + "createAccount", data=context.payload, verify=False
     )
 
     assert context.response is not None
