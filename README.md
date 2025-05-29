@@ -26,7 +26,7 @@ The project contains a ``.env`` file
 
 ## Testing
 
-### Run the QA test automation
+### Run the QA test automation locally
 In terminal execute:
 ```
 behave
@@ -51,3 +51,8 @@ Open HTML report:
 ```
 allure open allure-report --host localhost --port 53276  
 ```
+### Docker
+The projects Dockerfile installs Java and Allure before running the Behave tests
+
+### Github Actions
+The project has a workflow YAML file which builds an image from the Dockerfile, runs the tests and then uploads the Allure results as an Artifiact available after the pipeline runs.
