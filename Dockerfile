@@ -29,5 +29,8 @@ COPY . /app
 # Install needed packages specified in requirements.txt
 RUN  pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org --no-cache-dir -r requirements.txt
 
+# Install playwright browsers
+RUN playwright install --with-deps
+
 # Command to run behave tests and save results to allure-results
 CMD ["behave", "-f", "allure_behave.formatter:AllureFormatter", "-o", "allure-results"]
